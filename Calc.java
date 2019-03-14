@@ -129,7 +129,7 @@ public class Calc extends JFrame {
 			stackedValue = 0.0;
 			afterCalc = false;
 			isStacked = false;
-			result.setText("");//test
+			result.setText("");
 		}
 	}
 }
