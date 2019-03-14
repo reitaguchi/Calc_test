@@ -72,9 +72,13 @@ public class Calc extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		public NumberButton(String keyTop) {
+			super(keyTop); //JButtonクラスのコンストラクタを呼び出す
+			this.addActionListener(this); //このボタンにアクションイベントのリスナを設定
 		}
 
 		public void actionPerformed(ActionEvent evt) {
+			String keyNumber = this.getText(); //ボタンの名前を取り出す
+			appendResult(keyNumber); //ボタンの名前をテキストフィールドにつなげる
 		}
 	}
 
@@ -83,9 +87,31 @@ public class Calc extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		public CalcButton(String op) {
+			super(op);
+			this.addActionListener(this);
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			if (isStacked) { //以前に演算子ボタンが押されたのなら計算結果を出す
+				double resultValue = (Double.valueOf(result.getText()))
+						.doubleValue();
+				if (currentOp.equals("＋")) //演算子に応じて計算する
+					stackedValue += resultValue;
+				else if (currentOp.equals("－"))
+					stackedValue -= resultValue;
+				else if (currentOp.equals("×"))
+					stackedValue *= resultValue;
+				else if (currentOp.equals("÷"))
+					stackedValue /= resultValue;
+				result.setText(String.valueOf(stackedValue)); //計算結果をテキストフィールドに設定
+			}
+			currentOp = this.getText(); //ボタン名から押されたボタンの演算子を取り出す
+			stackedValue = (Double.valueOf(result.getText())).doubleValue();
+			afterCalc = true;
+			if (currentOp.equals("＝"))
+				isStacked = false;
+			else
+				isStacked = true;
 		}
 	}
 
@@ -95,9 +121,15 @@ public class Calc extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		public ClearButton() {
+			super("C");
+			this.addActionListener(this);
 		}
 
 		public void actionPerformed(ActionEvent evt) {
+			stackedValue = 0.0;
+			afterCalc = false;
+			isStacked = false;
+			result.setText("");
 		}
 	}
 }
