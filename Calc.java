@@ -112,10 +112,15 @@ public class Calc extends JFrame {
 				result.setText(String.valueOf(stackedValue)); //計算結果をテキストフィールドに設定
 			}
 			currentOp = this.getText(); //ボタン名から押されたボタンの演算子を取り出す
+			hist += " " + currentOp + " ";
+			System.out.println(hist);
 			stackedValue = (Double.valueOf(result.getText())).doubleValue();
 			afterCalc = true;
-			if (currentOp.equals("＝"))
+			if (currentOp.equals("＝")) {
 				isStacked = false;
+				hist += stackedValue;
+				System.out.println(hist);
+			}
 			else
 				isStacked = true;
 		}
