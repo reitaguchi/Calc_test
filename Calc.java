@@ -22,12 +22,13 @@ public class Calc extends JFrame {
 	boolean isStacked = false; //stackedValueに数値を入力したかどうか
 	boolean afterCalc = false; //演算子ボタンを押した後かどうか
 	String currentOp = ""; //押された演算子ボタンの名前
+	String hist = "";
 
 	//フレームのビルド
 	public Calc() {
 		contentPane.setLayout(borderLayout1);
 		this.setSize(new Dimension(250, 300));
-		this.setTitle("電子式卓上計算機");
+		this.setTitle("計算機");
 		this.setContentPane(contentPane);
 
 		contentPane.add(result, BorderLayout.NORTH); //テキストフィールドを配置
@@ -59,10 +60,15 @@ public class Calc extends JFrame {
 
 	/* テキストフィールドに引数の文字列をつなげる */
 	public void appendResult(String c) {
-		if (!afterCalc) //演算子ボタンを押した直後でないなら
+		if (!afterCalc) {//演算子ボタンを押した直後でないなら
 			result.setText(result.getText() + c); //押したボタンの名前をつなげる
+			hist += c;
+			System.out.println(hist);
+		}
 		else {
 			result.setText(c); //押したボタンの文字列だけを設定する（いったんクリアしたかに見える）
+			hist += c;
+			System.out.println(hist);
 			afterCalc = false;
 		}
 	}
@@ -130,6 +136,7 @@ public class Calc extends JFrame {
 			afterCalc = false;
 			isStacked = false;
 			result.setText("");
+			hist = "";
 		}
 	}
 }
