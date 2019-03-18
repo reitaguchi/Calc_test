@@ -18,20 +18,26 @@ public class Calc extends JFrame {
 	JPanel contentPane = new JPanel();
 	BorderLayout borderLayout1 = new BorderLayout();
 	JTextField result = new JTextField(""); //計算結果を表示するテキストフィールド
+	JTextField result2 = new JTextField(""); //計算結果を表示するテキストフィールド
 	double stackedValue = 0.0; //演算子ボタンを押す前にテキストフィールドにあった値
 	boolean isStacked = false; //stackedValueに数値を入力したかどうか
 	boolean afterCalc = false; //演算子ボタンを押した後かどうか
 	String currentOp = ""; //押された演算子ボタンの名前
-	String hist = "";
+	String form = "";
+	String[] hist = new String[2];
+	int a = 0;
+	String line = System.lineSeparator();
 
 	//フレームのビルド
 	public Calc() {
 		contentPane.setLayout(borderLayout1);
-		this.setSize(new Dimension(250, 300));
+		this.setSize(new Dimension(500, 300));
 		this.setTitle("計算機");
 		this.setContentPane(contentPane);
 
 		contentPane.add(result, BorderLayout.NORTH); //テキストフィールドを配置
+		contentPane.add(result2, BorderLayout.EAST);
+		result2.setPreferredSize(new Dimension(200, 200));
 
 		JPanel keyPanel = new JPanel(); //ボタンを配置するパネルを用意
 		keyPanel.setLayout(new GridLayout(4, 4)); //4行4列のGridLayoutにする
@@ -62,13 +68,13 @@ public class Calc extends JFrame {
 	public void appendResult(String c) {
 		if (!afterCalc) {//演算子ボタンを押した直後でないなら
 			result.setText(result.getText() + c); //押したボタンの名前をつなげる
-			hist += c;
-			System.out.println(hist);
+			form += c;
+			System.out.println(form);
 		}
 		else {
 			result.setText(c); //押したボタンの文字列だけを設定する（いったんクリアしたかに見える）
-			hist += c;
-			System.out.println(hist);
+			form += c;
+			System.out.println(form);
 			afterCalc = false;
 		}
 	}
@@ -112,14 +118,19 @@ public class Calc extends JFrame {
 				result.setText(String.valueOf(stackedValue)); //計算結果をテキストフィールドに設定
 			}
 			currentOp = this.getText(); //ボタン名から押されたボタンの演算子を取り出す
-			hist += " " + currentOp + " ";
-			System.out.println(hist);
+			form += " " + currentOp + " ";
+			System.out.println(form);
 			stackedValue = (Double.valueOf(result.getText())).doubleValue();
 			afterCalc = true;
 			if (currentOp.equals("＝")) {
 				isStacked = false;
-				hist += stackedValue;
-				System.out.println(hist);
+				form += stackedValue;
+				hist[a] = form;
+				result2.setText(result2.getText() + line + hist[a]);
+				System.out.println(hist[a]);
+				a++;
+				form = "";
+
 			}
 			else
 				isStacked = true;
@@ -141,7 +152,7 @@ public class Calc extends JFrame {
 			afterCalc = false;
 			isStacked = false;
 			result.setText("");
-			hist = "";
+			form = "";
 		}
 	}
 }
