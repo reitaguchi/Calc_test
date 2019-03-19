@@ -19,7 +19,7 @@ public class Calc extends JFrame {
 	JPanel contentPane = new JPanel();
 	BorderLayout borderLayout1 = new BorderLayout();
 	JTextField result = new JTextField(""); //計算結果を表示するテキストフィールド
-	JTextArea result2 = new JTextArea(); //計算結果を表示するテキストフィールド
+	JTextArea hist_result = new JTextArea(); // 履歴を表示するテキストフィールド
 	double stackedValue = 0.0; //演算子ボタンを押す前にテキストフィールドにあった値
 	boolean isStacked = false; //stackedValueに数値を入力したかどうか
 	boolean afterCalc = false; //演算子ボタンを押した後かどうか
@@ -35,8 +35,8 @@ public class Calc extends JFrame {
 		this.setContentPane(contentPane);
 
 		contentPane.add(result, BorderLayout.NORTH); //テキストフィールドを配置
-		contentPane.add(result2, BorderLayout.EAST);
-		result2.setPreferredSize(new Dimension(200, 200));
+		contentPane.add(hist_result, BorderLayout.EAST);//履歴を表示するフィールドを配置
+		hist_result.setPreferredSize(new Dimension(200, 200));
 
 		JPanel keyPanel = new JPanel(); //ボタンを配置するパネルを用意
 		keyPanel.setLayout(new GridLayout(4, 4)); //4行4列のGridLayoutにする
@@ -67,13 +67,13 @@ public class Calc extends JFrame {
 	public void appendResult(String c) {
 		if (!afterCalc) {//演算子ボタンを押した直後でないなら
 			result.setText(result.getText() + c); //押したボタンの名前をつなげる
-			form += c;
-			System.out.println(form);
+			form += c; //演算子ボタンを押す前の数字を追加
+//			System.out.println(form);
 		}
 		else {
 			result.setText(c); //押したボタンの文字列だけを設定する（いったんクリアしたかに見える）
-			form += c;
-			System.out.println(form);
+			form += c; //演算子ボタンを押す後の数字を追加
+//			System.out.println(form);
 			afterCalc = false;
 		}
 	}
@@ -117,15 +117,15 @@ public class Calc extends JFrame {
 				result.setText(String.valueOf(stackedValue)); //計算結果をテキストフィールドに設定
 			}
 			currentOp = this.getText(); //ボタン名から押されたボタンの演算子を取り出す
-			form += " " + currentOp + " ";
-			System.out.println(form);
+			form += " " + currentOp + " "; //演算子を追加
+//			System.out.println(form);
 			stackedValue = (Double.valueOf(result.getText())).doubleValue();
 			afterCalc = true;
 			if (currentOp.equals("＝")) {
 				isStacked = false;
-				form += stackedValue;
-				result2.setText(result2.getText() + line + form);
-				form = "";
+				form += stackedValue; //計算式の答えを追加
+				hist_result.setText(hist_result.getText() + line + form); //履歴のテキストフィールドに表示
+				form = ""; //計算式と答えを初期化
 			}
 			else
 				isStacked = true;
