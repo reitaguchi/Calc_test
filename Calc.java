@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 
@@ -18,14 +19,12 @@ public class Calc extends JFrame {
 	JPanel contentPane = new JPanel();
 	BorderLayout borderLayout1 = new BorderLayout();
 	JTextField result = new JTextField(""); //計算結果を表示するテキストフィールド
-	JTextField result2 = new JTextField(""); //計算結果を表示するテキストフィールド
+	JTextArea result2 = new JTextArea(); //計算結果を表示するテキストフィールド
 	double stackedValue = 0.0; //演算子ボタンを押す前にテキストフィールドにあった値
 	boolean isStacked = false; //stackedValueに数値を入力したかどうか
 	boolean afterCalc = false; //演算子ボタンを押した後かどうか
 	String currentOp = ""; //押された演算子ボタンの名前
 	String form = "";
-	String[] hist = new String[2];
-	int a = 0;
 	String line = System.lineSeparator();
 
 	//フレームのビルド
@@ -125,12 +124,8 @@ public class Calc extends JFrame {
 			if (currentOp.equals("＝")) {
 				isStacked = false;
 				form += stackedValue;
-				hist[a] = form;
-				result2.setText(result2.getText() + line + hist[a]);
-				System.out.println(hist[a]);
-				a++;
+				result2.setText(result2.getText() + line + form);
 				form = "";
-
 			}
 			else
 				isStacked = true;
